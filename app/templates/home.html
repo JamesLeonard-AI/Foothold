@@ -37,34 +37,55 @@
 
     {% for job in jobs %}
 
-    <div class="card">
+    <div class="card job-card">
 
-        <h3>{{ job.title }}</h3>
+    <h3>{{ job.title }}</h3>
 
-        <p>
-            {{ job.company }}
-        </p>
+    <p>
+        🏢 {{ job.company }}
+    </p>
 
-        <p>
-            Match Score:
-            <strong>{{ job.match_score }}% Match</strong>
-        </p>
-
-
-        <p>
-    Match Reason:
-</p>
-
-<p>
-    {{ job.match_reason }}
-</p>
+    {% if job.remote %}
+    <p>
+        🌎 Remote
+    </p>
+    {% else %}
+    <p>
+        📍 {{ job.location }}
+    </p>
+    {% endif %}
 
 
-        <button>
-            Generate Draft
-        </button>
+    <p>
+        💰
+        {% if job.salary_min and job.salary_max %}
+            ${{ job.salary_min }} - ${{ job.salary_max }}
+        {% else %}
+            Salary not listed
+        {% endif %}
+    </p>
 
-    </div>
+
+    <p>
+        🎯 Match:
+        <strong>{{ job.match_score }}%</strong>
+    </p>
+
+
+    <p>
+        <strong>Why it matches:</strong>
+    </p>
+
+    <p>
+        {{ job.match_reason }}
+    </p>
+
+
+    <button>
+        Generate Draft
+    </button>
+
+</div>
 
 
     {% endfor %}
