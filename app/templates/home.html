@@ -32,13 +32,51 @@
 
     <div class="card">
 
-        <h2>Today's Opportunities</h2>
+    <h2>Today's Opportunities</h2>
+
+
+    {% for job in jobs %}
+
+    <div class="card">
+
+        <h3>{{ job.title }}</h3>
 
         <p>
-            No jobs loaded yet.
+            {{ job.company }}
         </p>
 
+        <p>
+            Match Score:
+            <strong>{{ job.score }}%</strong>
+        </p>
+
+
+        <p>
+            Skills Match:
+        </p>
+
+        <ul>
+
+            {% for skill in job.skills %}
+
+            <li>{{ skill }}</li>
+
+            {% endfor %}
+
+        </ul>
+
+
+        <button>
+            Generate Draft
+        </button>
+
     </div>
+
+
+    {% endfor %}
+
+
+</div>
 
 
 </div>
