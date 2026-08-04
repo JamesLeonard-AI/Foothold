@@ -1,5 +1,6 @@
-from sqlalchemy import Column, Integer, String, Text, Boolean, DateTime
 from datetime import datetime
+
+from sqlalchemy import Boolean, Column, DateTime, Integer, String, Text
 
 from app.database.database import Base
 
@@ -20,19 +21,10 @@ class Job(Base):
     salary_max = Column(Integer, nullable=True)
 
     url = Column(String, nullable=True)
-
     description = Column(Text, nullable=True)
 
     match_score = Column(Integer, default=0)
-
     match_reason = Column(Text, nullable=True)
+    application_status = Column(String, default="new")
 
-    application_status = Column(
-        String,
-        default="new"
-    )
-
-    date_found = Column(
-        DateTime,
-        default=datetime.utcnow
-    )
+    date_found = Column(DateTime, default=datetime.utcnow)

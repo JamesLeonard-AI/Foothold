@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Upload Resume</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="card">
+
+        <h1>Upload Resume</h1>
+
+        <form action="/upload" method="post" enctype="multipart/form-data">
+
+            <input
+                type="file"
+                name="resume"
+                accept=".pdf,.doc,.docx"
+            >
+
+            <br><br>
+
+            <button>
+                Upload Resume
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
