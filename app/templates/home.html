@@ -47,23 +47,17 @@
 
         <p>
             Match Score:
-            <strong>{{ job.score }}%</strong>
+            <strong>{{ job.match_score }}% Match</strong>
         </p>
 
 
         <p>
-            Skills Match:
-        </p>
+    Match Reason:
+</p>
 
-        <ul>
-
-            {% for skill in job.skills %}
-
-            <li>{{ skill }}</li>
-
-            {% endfor %}
-
-        </ul>
+<p>
+    {{ job.match_reason }}
+</p>
 
 
         <button>

@@ -1,7 +1,11 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Depends
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 
+from sqlalchemy.orm import Session
+
+from app.database.session import get_db
+from app.models.job import Job
 
 app = FastAPI()
 
@@ -11,30 +15,12 @@ templates = Jinja2Templates(directory="app/templates")
 
 
 @app.get("/")
-async def home(request: Request):
+async def home(
+    request: Request,
+    db: Session = Depends(get_db)
+):
 
-    jobs = [
-        {
-            "title": "AI Automation Engineer",
-            "company": "CloudFlow Systems",
-            "score": 87,
-            "skills": [
-                "Python",
-                "LangChain",
-                "RAG"
-            ]
-        },
-        {
-            "title": "Junior AI Developer",
-            "company": "NovaTech",
-            "score": 78,
-            "skills": [
-                "FastAPI",
-                "APIs",
-                "Machine Learning"
-            ]
-        }
-    ]
+    jobs = db.query(Job).all()
 
     return templates.TemplateResponse(
         request=request,

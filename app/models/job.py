@@ -23,6 +23,15 @@ class Job(Base):
 
     description = Column(Text, nullable=True)
 
+    match_score = Column(Integer, default=0)
+
+    match_reason = Column(Text, nullable=True)
+
+    application_status = Column(
+        String,
+        default="new"
+    )
+
     date_found = Column(
         DateTime,
         default=datetime.utcnow
