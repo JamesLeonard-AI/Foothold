@@ -5,12 +5,14 @@ from sqlalchemy.orm import Session
 
 from app.database.session import get_db
 from app.models.job import Job
+from app.routes.analysis import router as analysis_router
 from app.routes.upload import router as upload_router
 
 
 app = FastAPI()
 
 app.include_router(upload_router)
+app.include_router(analysis_router)
 
 app.mount(
     "/static",

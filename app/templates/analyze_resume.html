@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Analyze Resume</title>
+    <link rel="stylesheet" href="/static/style.css">
+
+    <style>
+        #spinner {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .spinner {
+            width: 32px;
+            height: 32px;
+            border: 4px solid #ddd;
+            border-top: 4px solid #2563eb;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: auto;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to   { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="card">
+
+        <h1>Resume Uploaded</h1>
+
+        <p>Your resume is ready to analyze.</p>
+
+        <p><strong>{{ filename }}</strong></p>
+
+        <form
+            action="/analyze/{{ filename }}"
+            method="post"
+            onsubmit="startAnalysis()"
+        >
+
+            <button
+                id="analyzeButton"
+                type="submit"
+            >
+                Analyze Resume
+            </button>
+
+        </form>
+
+        <div id="spinner">
+
+            <div class="spinner"></div>
+
+            <p id="status">
+                Preparing analysis...
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+function startAnalysis(){
+
+    const button = document.getElementById("analyzeButton");
+
+    button.disabled = true;
+
+    button.innerText = "Analyzing...";
+
+    document.getElementById("spinner").style.display = "block";
+
+}
+
+</script>
+
+</body>
+</html>

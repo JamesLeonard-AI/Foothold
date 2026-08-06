@@ -23,9 +23,16 @@ def upload_page(request: Request):
 
 @router.post("/upload")
 async def upload_resume(resume: UploadFile = File(...)):
-    destination = UPLOAD_FOLDER / resume.filename
+    if not resume.filename:
+        raise ValueError("No filename was provided.")
+
+    filename = Path(resume.filename).name
+    destination = UPLOAD_FOLDER / filename
 
     with destination.open("wb") as buffer:
         buffer.write(await resume.read())
 
-    return RedirectResponse(url="/", status_code=303)
+    return RedirectResponse(
+        url=f"/analyze/{filename}",
+        status_code=303,
+    )

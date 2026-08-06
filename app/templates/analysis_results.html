@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Resume Analysis</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+<div class="container">
+
+    <div class="card">
+        <h1>Resume Analysis Complete</h1>
+
+        <p>
+            <strong>Candidate:</strong>
+            {{ analysis.name }}
+        </p>
+
+        <p>
+            <strong>Saved Analysis ID:</strong>
+            {{ record.id }}
+        </p>
+    </div>
+
+    <div class="card">
+        <h2>Skills</h2>
+
+        <ul>
+            {% for skill in analysis.skills %}
+                <li>{{ skill }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>Projects</h2>
+
+        {% for project in analysis.projects %}
+            <h3>{{ project.name }}</h3>
+
+            <p>
+                <strong>Status:</strong>
+                {{ project.status }}
+            </p>
+
+            <p>
+                <strong>Technologies:</strong>
+                {{ project.technologies | join(", ") }}
+            </p>
+        {% endfor %}
+    </div>
+
+    <div class="card">
+        <h2>Professional Experience</h2>
+
+        {% for job in analysis.professional_experience %}
+            <h3>{{ job.title }}</h3>
+
+            <p>
+                {{ job.company }}
+                — {{ job.start_date }} to {{ job.end_date }}
+            </p>
+        {% endfor %}
+    </div>
+
+    <div class="card">
+        <h2>Certifications</h2>
+
+        <ul>
+            {% for certification in analysis.certifications %}
+                <li>{{ certification }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>Education</h2>
+
+        {% for item in analysis.education %}
+            <p>
+                <strong>{{ item.school }}</strong><br>
+                {{ item.degree }} {{ item.field }}<br>
+                {{ item.expected_graduation }}
+            </p>
+        {% endfor %}
+    </div>
+
+</div>
+</body>
+</html>
