@@ -1,0 +1,60 @@
+<svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 180 200"
+    role="img"
+    aria-labelledby="logoTitle logoDescription"
+>
+    <title id="logoTitle">Foothold</title>
+    <desc id="logoDescription">
+        An open doorway with three ascending footholds.
+    </desc>
+
+    <defs>
+        <linearGradient id="doorGradient" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#F3E7CE"/>
+            <stop offset="55%" stop-color="#C6A15B"/>
+            <stop offset="100%" stop-color="#8E713F"/>
+        </linearGradient>
+
+        <linearGradient id="stoneGradient" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#E2C995"/>
+            <stop offset="100%" stop-color="#A88449"/>
+        </linearGradient>
+
+        <radialGradient id="doorGlow" cx="50%" cy="100%" r="70%">
+            <stop offset="0%" stop-color="#C6A15B" stop-opacity="0.42"/>
+            <stop offset="100%" stop-color="#C6A15B" stop-opacity="0"/>
+        </radialGradient>
+    </defs>
+
+    <!-- Subtle light inside the doorway -->
+    <ellipse
+        cx="90"
+        cy="93"
+        rx="48"
+        ry="38"
+        fill="url(#doorGlow)"
+    />
+
+    <!-- Open doorway -->
+    <path
+        d="M48 95V25L90 10L132 25V95H119V35L90 25L61 35V95Z"
+        fill="url(#doorGradient)"
+    />
+
+    <!-- Three footholds forming a subtle F -->
+    <path
+        d="M55 103H125L116 119H48Z"
+        fill="url(#stoneGradient)"
+    />
+
+    <path
+        d="M47 128H101L93 143H40Z"
+        fill="url(#stoneGradient)"
+    />
+
+    <path
+        d="M39 152H78L71 167H32Z"
+        fill="url(#stoneGradient)"
+    />
+</svg>

@@ -1,4 +1,4 @@
-from app.database.database import Base, engine
+from Projects.foothold.app.database.database import Base, engine
 from app.models.job import Job
 from app.models.profile import Profile
 
