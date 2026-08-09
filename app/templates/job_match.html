@@ -63,7 +63,7 @@
             <textarea
                 id="job_description"
                 name="job_description"
-                rows="18"
+                    rows="{% if match_result %}8{% else %}18{% endif %}"
                 placeholder="Paste the full job description here..."
                 required
             >{{ job_description }}</textarea>
@@ -104,7 +104,7 @@
         <div class="metric">
 
             <span class="metric-value">
-                {{ match_result["match_score"] }}%
+                {{ match_score }}%
             </span>
 
             <span class="metric-label">
@@ -114,7 +114,52 @@
         </div>
 
     </div>
+    <!-- TEMPORARY SCORING DEBUG -->
+   <!-- TEMPORARY SCORING DEBUG -->
 
+<div class="card">
+
+    <div class="card">
+
+    <h3>Match Breakdown</h3>
+
+    <div class="match-breakdown">
+
+       
+
+        <div class="breakdown-item">
+    <span class="metric-label">
+        Capabilities Matched
+    </span>
+
+    <span class="breakdown-score">
+        {{ match_result["matched_capabilities"] | length }} / {{ match_result["capability_results"] | length }}
+    </span>
+</div>
+
+<div class="breakdown-item">
+    <span class="metric-label">
+        Partial Matches
+    </span>
+
+    <span class="breakdown-score">
+        {{ match_result["partial_capabilities"] | length }} / {{ match_result["capability_results"] | length }}
+    </span>
+</div>
+
+<div class="breakdown-item">
+    <span class="metric-label">
+        Missing Capabilities
+    </span>
+
+    <span class="breakdown-score">
+        {{ match_result["missing_capabilities"] | length }} / {{ match_result["capability_results"] | length }}
+    </span>
+</div>
+    </div>
+
+</div>
+</div>
     <div class="ats-feedback-grid">
 
         <div class="card">

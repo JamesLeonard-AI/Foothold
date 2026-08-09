@@ -1,6 +1,22 @@
+# Environment variables
+.env
+
+# Python virtual environment
 venv/
+
+# Python cache files
 __pycache__/
-.env
 *.pyc
+*.pyo
+*.pyd
+
+# Local database
 database/*.db
-.env
+*.db
+
+# Uploaded resumes
+resumes/*
+!resumes/.gitkeep
+
+app/resumes/*
+!app/resumes/.gitkeep

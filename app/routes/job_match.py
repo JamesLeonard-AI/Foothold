@@ -5,7 +5,10 @@ from sqlalchemy.orm import Session
 
 from app.database.session import get_db
 from app.models.resume_analysis import ResumeAnalysis
-from app.services.job_match_service import compare_resume_to_job
+from app.services.job_evidence_service import evaluate_resume_evidence
+from app.services.job_match_score import calculate_job_match_score
+from app.services.job_requirement_service import extract_job_requirements
+
 
 router = APIRouter()
 
@@ -45,10 +48,109 @@ async def compare_job(
             },
         )
 
-    match_result = compare_resume_to_job(
-        resume_analysis=latest_analysis.analysis_json,
+    # Stage 1: Extract canonical job requirements.
+    job_requirements = extract_job_requirements(
         job_description=job_description,
     )
+
+    # Stage 2: Evaluate resume evidence.
+    evidence_result = evaluate_resume_evidence(
+        resume_analysis=latest_analysis.analysis_json,
+        job_requirements=job_requirements,
+    )
+
+    # Stage 3: Calculate deterministic score.
+    match_score = calculate_job_match_score(
+        capability_results=evidence_result["capability_results"],
+        experience_status=evidence_result["experience_status"],
+        education_status=evidence_result["education_status"],
+    )
+
+    matched_capabilities = [
+        result
+        for result in evidence_result["capability_results"]
+        if result["status"] == "matched"
+    ]
+
+    partial_capabilities = [
+        result
+        for result in evidence_result["capability_results"]
+        if result["status"] == "partial"
+    ]
+
+    missing_capabilities = [
+        result
+        for result in evidence_result["capability_results"]
+        if result["status"] == "not_matched"
+    ]
+
+    CATEGORY_LABELS = {
+        "ai_solution_development": "AI Solution Development",
+        "agent_architecture_rag": "Agent Architecture & RAG",
+        "ai_platform_administration": "AI Platform Administration",
+        "enterprise_integrations": "Enterprise Integrations",
+        "data_pipelines": "Data Pipelines",
+        "api_connectivity": "API & Connectivity",
+        "workflow_automation": "Workflow Automation",
+        "debugging": "Debugging & Root-Cause Analysis",
+        "monitoring_observability": "Monitoring & Observability",
+        "documentation_enablement": "Documentation & Enablement",
+    }
+
+    strengths = [
+        (
+            f'{CATEGORY_LABELS.get(result["category"], result["category"])}: '
+            f'{result["evidence"]}'
+        )
+        for result in matched_capabilities
+    ]
+
+    missing_skills = [
+        CATEGORY_LABELS.get(
+            result["category"],
+            result["category"],
+        )
+        for result in missing_capabilities
+    ]
+
+    recommendations = [
+        (
+            "Strengthen or document evidence for: "
+            + CATEGORY_LABELS.get(
+                result["category"],
+                result["category"],
+            )
+        )
+        for result in (
+            partial_capabilities
+            + missing_capabilities
+        )
+    ]
+
+    match_result = {
+        "capabilities": job_requirements["capabilities"],
+        "capability_results": evidence_result["capability_results"],
+        "matched_capabilities": matched_capabilities,
+        "partial_capabilities": partial_capabilities,
+        "missing_capabilities": missing_capabilities,
+        "experience_requirement": job_requirements[
+            "experience_requirement"
+        ],
+        "experience_status": evidence_result["experience_status"],
+        "experience_evidence": evidence_result[
+            "experience_evidence"
+        ],
+        "education_requirement": job_requirements[
+            "education_requirement"
+        ],
+        "education_match": evidence_result["education_status"],
+        "education_evidence": evidence_result[
+            "education_evidence"
+        ],
+        "strengths": strengths,
+        "missing_skills": missing_skills,
+        "recommendations": recommendations,
+    }
 
     return templates.TemplateResponse(
         request=request,
@@ -56,5 +158,6 @@ async def compare_job(
         context={
             "job_description": job_description,
             "match_result": match_result,
+            "match_score": match_score,
         },
     )
