@@ -8,12 +8,14 @@ from app.models.job import Job
 from app.routes.analysis import router as analysis_router
 from app.routes.upload import router as upload_router
 from app.routes.job_match import router as job_match_router
+from app.routes.jobs import router as jobs_router
 
 app = FastAPI()
 
 app.include_router(upload_router)
 app.include_router(analysis_router)
 app.include_router(job_match_router)
+app.include_router(jobs_router)
 
 app.mount(
     "/static",

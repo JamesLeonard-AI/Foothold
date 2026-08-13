@@ -56,6 +56,30 @@
             method="post"
         >
 
+            <label for="job_title">
+                Job Title
+            </label>
+
+            <input
+                type="text"
+                id="job_title"
+                name="job_title"
+                placeholder="e.g. AI Workflow Engineer"
+                value="{{ job_title or '' }}"
+            >
+
+            <label for="company_name">
+                Company
+            </label>
+
+            <input
+                type="text"
+                id="company_name"
+                name="company_name"
+                placeholder="e.g. Acme Inc."
+                value="{{ company_name or '' }}"
+            >
+
             <label for="job_description">
                 Job Description
             </label>

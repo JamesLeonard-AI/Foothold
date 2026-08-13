@@ -379,6 +379,68 @@ input[type="file"]::file-selector-button {
     font-size: 1.08rem;
 }
 
+.job-status {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+.status-new {
+    background: rgba(198, 161, 91, 0.14);
+    color: var(--brand-ivory);
+}
+
+.status-interested {
+    background: rgba(217, 164, 65, 0.16);
+    color: var(--warning);
+}
+
+.status-applied {
+    background: rgba(63, 163, 108, 0.16);
+    color: var(--success);
+}
+
+.status-rejected {
+    background: rgba(214, 92, 92, 0.16);
+    color: var(--error);
+}
+
+.job-status-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+.status-form {
+    display: inline-block;
+}
+
+.button-small {
+    padding: 7px 11px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    background: var(--surface-hover);
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    cursor: pointer;
+    transition:
+        background 0.18s ease,
+        border-color 0.18s ease;
+}
+
+.button-small:hover {
+    background: var(--surface-raised);
+    border-color: var(--brand-dark);
+    color: var(--brand-ivory);
+}
+
 .job-meta {
     display: grid;
     gap: 5px;

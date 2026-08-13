@@ -4,6 +4,7 @@ from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 
 from app.database.session import get_db
+from app.models.job import Job
 from app.models.resume_analysis import ResumeAnalysis
 from app.services.job_evidence_service import evaluate_resume_evidence
 from app.services.job_match_score import calculate_job_match_score
@@ -30,6 +31,8 @@ async def job_match_page(request: Request):
 async def compare_job(
     request: Request,
     job_description: str = Form(...),
+    job_title: str = Form(""),
+    company_name: str = Form(""),
     db: Session = Depends(get_db),
 ):
     latest_analysis = (
@@ -44,6 +47,8 @@ async def compare_job(
             name="job_match.html",
             context={
                 "job_description": job_description,
+                "job_title": job_title,
+                "company_name": company_name,
                 "error": "No analyzed resume was found.",
             },
         )
@@ -127,6 +132,30 @@ async def compare_job(
         )
     ]
 
+    # Persist this match result so it shows up on the dashboard and
+    # can be tracked (applied / interested / rejected) over time.
+    match_reason_summary = (
+        f"{len(matched_capabilities)} matched, "
+        f"{len(partial_capabilities)} partial, "
+        f"{len(missing_capabilities)} missing capabilities. "
+        f"Experience: {evidence_result['experience_status']}. "
+        f"Education: {evidence_result['education_status']}."
+    )
+
+    saved_job = Job(
+        source="manual",
+        title=job_title.strip() if job_title.strip() else "Untitled Position",
+        company=company_name.strip() if company_name.strip() else "Unknown Company",
+        description=job_description,
+        match_score=match_score,
+        match_reason=match_reason_summary,
+        application_status="new",
+    )
+
+    db.add(saved_job)
+    db.commit()
+    db.refresh(saved_job)
+
     match_result = {
         "capabilities": job_requirements["capabilities"],
         "capability_results": evidence_result["capability_results"],
@@ -157,7 +186,10 @@ async def compare_job(
         name="job_match.html",
         context={
             "job_description": job_description,
+            "job_title": job_title,
+            "company_name": company_name,
             "match_result": match_result,
             "match_score": match_score,
+            "saved_job_id": saved_job.id,
         },
     )
