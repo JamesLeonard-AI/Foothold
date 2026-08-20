@@ -8,6 +8,13 @@ Instead of relying on a generic resume score or asking an LLM to produce an unex
 
 The result is a more explainable job-match workflow that shows **why** a candidate matches a role, where their experience is partial, and which capabilities may need strengthening.
 
+Live Demo
+
+Foothold is deployed and available here:
+https://foothold-jc21.onrender.com
+
+Note: The demo is hosted on Render’s free tier, so the first load may take a few moments if the service has been idle.
+
 ---
 
 ## Features
